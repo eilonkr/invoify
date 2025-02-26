@@ -1,0 +1,92 @@
+{
+    "form": {
+        "title": "חשבונית",
+        "description": "יצירת חשבונית",
+        "newInvBadge": "חשבונית חדשה",
+        "wizard": {
+            "fromAndTo": "מאת ואל",
+            "invoiceDetails": "פרטי חשבונית",
+            "lineItems": "פריטים",
+            "paymentInfo": "פרטי תשלום",
+            "summary": "סיכום",
+            "next": "הבא",
+            "back": "חזור"
+        },
+        "steps": {
+            "fromAndTo": {
+                "billFrom": "חייב מאת",
+                "billTo": "חייב אל",
+                "name": "שם",
+                "address": "כתובת",
+                "zipCode": "מיקוד",
+                "city": "עיר",
+                "country": "מדינה",
+                "email": "דוא״ל",
+                "phone": "טלפון",
+                "addCustomInput": "הוסף שדה מותאם אישית",
+                "sender": "שולח",
+                "receiver": "מקבל"
+            },
+            "invoiceDetails": {
+                "heading": "פרטי חשבונית",
+                "invoiceLogo": {
+                    "label": "לוגו חשבונית",
+                    "placeholder": "לחץ להעלאת תמונה"
+                },
+                "invoiceNumber": "מספר חשבונית",
+                "issuedDate": "תאריך הנפקה",
+                "dueDate": "תאריך לתשלום",
+                "currency": "מטבע"
+            },
+            "lineItems": {
+                "heading": "פריטים",
+                "item": "פריט",
+                "name": "שם",
+                "quantity": "כמות",
+                "rate": "מחיר",
+                "total": "סה״כ",
+                "description": "תיאור",
+                "addNewItem": "הוסף פריט חדש",
+                "removeItem": "הסר פריט"
+            },
+            "paymentInfo": {
+                "heading": "פרטי תשלום",
+                "bankName": "שם הבנק",
+                "accountName": "שם החשבון",
+                "accountNumber": "מספר חשבון"
+            },
+            "summary": {
+                "heading": "סיכום",
+                "signature": {
+                    "heading": "חתימה",
+                    "placeholder": "לחץ להוספת חתימה",
+                    "draw": "צייר",
+                    "type": "הקלד",
+                    "upload": "העלה"
+                },
+                "additionalNotes": "הערות נוספות",
+                "paymentTerms": "תנאי תשלום",
+                "discount": "הנחה",
+                "tax": "מע״מ",
+                "shipping": "משלוח",
+                "subTotal": "סכום ביניים",
+                "totalAmount": "סה״כ לתשלום",
+                "includeTotalInWords": "כלול סכום במילים?",
+                "yes": "כן",
+                "no": "לא"
+            }
+        }
+    },
+    "actions": {
+        "title": "פעולות",
+        "description": "פעולות ותצוגה מקדימה",
+        "loadInvoice": "טען חשבונית",
+        "exportInvoice": "ייצא חשבונית",
+        "newInvoice": "חשבונית חדשה",
+        "generatePdf": "צור PDF",
+        "pdfView": "תצוגת PDF"
+    },
+    "footer": {
+        "developedBy": "פותח על ידי"
+    }
+} 

@@ -3,6 +3,9 @@ import React from "react";
 // Components
 import { InvoiceLayout } from "@/app/components";
 
+// Hooks
+import { useTranslation } from "@/app/hooks/useTranslation";
+
 // Helpers
 import { formatNumberWithCommas, isDataUrl } from "@/lib/helpers";
 
@@ -11,15 +14,30 @@ import { DATE_OPTIONS } from "@/lib/variables";
 
 // Types
 import { InvoiceType } from "@/types";
+import type { Language } from "@/app/translations/invoice";
 
-const InvoiceTemplate2 = (data: InvoiceType) => {
-    const { sender, receiver, details } = data;
+interface InvoiceTemplateProps extends InvoiceType {
+    language?: Language;
+}
+
+const InvoiceTemplate2 = (props: InvoiceTemplateProps) => {
+    const { sender, receiver, details, language = 'en' } = props;
+    const { t } = useTranslation(language);
+
+    const dateOptions = {
+        ...DATE_OPTIONS,
+        locale: language === 'he' ? 'he-IL' : 
+                language === 'ar' ? 'ar-SA' : 'en-US'
+    };
+
+    const isRTL = language === 'he' || language === 'ar';
+
     return (
-        <InvoiceLayout data={data}>
-            <div className="flex justify-between">
+        <InvoiceLayout data={props}>
+            <div className="flex justify-between" dir={isRTL ? 'rtl' : 'ltr'}>
                 <div>
                     <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
-                        Invoice #
+                        {t('invoice')}
                     </h2>
                     <span className="mt-1 block text-gray-500">
                         {details.invoiceNumber}
@@ -37,7 +55,7 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                         {sender.name}
                     </h1>
                 </div>
-                <div className="text-right">
+                <div className={isRTL ? 'text-left' : 'text-right'}>
                     <address className="mt-4 not-italic text-gray-800">
                         {sender.address}
                         <br />
@@ -49,10 +67,10 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                 </div>
             </div>
 
-            <div className="mt-6 grid sm:grid-cols-2 gap-3">
+            <div className="mt-6 grid sm:grid-cols-2 gap-3" dir={isRTL ? 'rtl' : 'ltr'}>
                 <div>
                     <h3 className="text-lg font-semibold text-gray-800">
-                        Bill to:
+                        {t('billTo')}
                     </h3>
                     <h3 className="text-lg font-semibold text-gray-800">
                         {receiver.name}
@@ -64,47 +82,42 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                         <br />
                     </address>
                 </div>
-                <div className="sm:text-right space-y-2">
+                <div className={`${isRTL ? 'sm:text-left' : 'sm:text-right'} space-y-2`}>
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
                         <dl className="grid sm:grid-cols-6 gap-x-3">
                             <dt className="col-span-3 font-semibold text-gray-800">
-                                Invoice date:
+                                {t('invoiceDate')}
                             </dt>
                             <dd className="col-span-3 text-gray-500">
-                                {new Date(
-                                    details.invoiceDate
-                                ).toLocaleDateString("en-US", DATE_OPTIONS)}
+                                {new Date(details.invoiceDate).toLocaleDateString(dateOptions.locale, dateOptions)}
                             </dd>
                         </dl>
                         <dl className="grid sm:grid-cols-6 gap-x-3">
                             <dt className="col-span-3 font-semibold text-gray-800">
-                                Due date:
+                                {t('dueDate')}
                             </dt>
                             <dd className="col-span-3 text-gray-500">
-                                {new Date(details.dueDate).toLocaleDateString(
-                                    "en-US",
-                                    DATE_OPTIONS
-                                )}
+                                {new Date(details.dueDate).toLocaleDateString(dateOptions.locale, dateOptions)}
                             </dd>
                         </dl>
                     </div>
                 </div>
             </div>
 
-            <div className="mt-3">
+            <div className="mt-3" dir={isRTL ? 'rtl' : 'ltr'}>
                 <div className="border border-gray-200 p-1 rounded-lg space-y-1">
                     <div className="hidden sm:grid sm:grid-cols-5">
                         <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
-                            Item
+                            {t('item')}
                         </div>
                         <div className="text-left text-xs font-medium text-gray-500 uppercase">
-                            Qty
+                            {t('quantity')}
                         </div>
                         <div className="text-left text-xs font-medium text-gray-500 uppercase">
-                            Rate
+                            {t('rate')}
                         </div>
-                        <div className="text-right text-xs font-medium text-gray-500 uppercase">
-                            Amount
+                        <div className={`${isRTL ? 'text-left' : 'text-right'} text-xs font-medium text-gray-500 uppercase`}>
+                            {t('amount')}
                         </div>
                     </div>
                     <div className="hidden sm:block border-b border-gray-200"></div>
@@ -130,7 +143,7 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                                     </p>
                                 </div>
                                 <div className="border-b border-gray-300">
-                                    <p className="sm:text-right text-gray-800">
+                                    <p className={`${isRTL ? '' : 'sm:text-right'} text-gray-800`}>
                                         {item.total} {details.currency}
                                     </p>
                                 </div>
@@ -141,29 +154,25 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                 </div>
             </div>
 
-            <div className="mt-2 flex sm:justify-end">
+            <div className={`mt-2 flex ${isRTL ? 'sm:justify-start' : 'sm:justify-end'}`} dir={isRTL ? 'rtl' : 'ltr'}>
                 <div className="w-full max-w-2xl sm:text-right space-y-2">
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
                         <dl className="grid sm:grid-cols-5 gap-x-3">
                             <dt className="col-span-3 font-semibold text-gray-800">
-                                Subtotal:
+                                {t('subtotal')}
                             </dt>
                             <dd className="col-span-2 text-gray-500">
-                                {formatNumberWithCommas(
-                                    Number(details.subTotal)
-                                )}{" "}
-                                {details.currency}
+                                {formatNumberWithCommas(Number(details.subTotal))} {details.currency}
                             </dd>
                         </dl>
                         {details.discountDetails?.amount != undefined &&
                             details.discountDetails?.amount > 0 && (
                                 <dl className="grid sm:grid-cols-5 gap-x-3">
                                     <dt className="col-span-3 font-semibold text-gray-800">
-                                        Discount:
+                                        {t('discount')}
                                     </dt>
                                     <dd className="col-span-2 text-gray-500">
-                                        {details.discountDetails.amountType ===
-                                        "amount"
+                                        {details.discountDetails.amountType === "amount"
                                             ? `- ${details.discountDetails.amount} ${details.currency}`
                                             : `- ${details.discountDetails.amount}%`}
                                     </dd>
@@ -173,11 +182,10 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                             details.taxDetails?.amount > 0 && (
                                 <dl className="grid sm:grid-cols-5 gap-x-3">
                                     <dt className="col-span-3 font-semibold text-gray-800">
-                                        Tax:
+                                        {t('tax')}
                                     </dt>
                                     <dd className="col-span-2 text-gray-500">
-                                        {details.taxDetails.amountType ===
-                                        "amount"
+                                        {details.taxDetails.amountType === "amount"
                                             ? `+ ${details.taxDetails.amount} ${details.currency}`
                                             : `+ ${details.taxDetails.amount}%`}
                                     </dd>
@@ -187,11 +195,10 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                             details.shippingDetails?.cost > 0 && (
                                 <dl className="grid sm:grid-cols-5 gap-x-3">
                                     <dt className="col-span-3 font-semibold text-gray-800">
-                                        Shipping:
+                                        {t('shipping')}
                                     </dt>
                                     <dd className="col-span-2 text-gray-500">
-                                        {details.shippingDetails.costType ===
-                                        "amount"
+                                        {details.shippingDetails.costType === "amount"
                                             ? `+ ${details.shippingDetails.cost} ${details.currency}`
                                             : `+ ${details.shippingDetails.cost}%`}
                                     </dd>
@@ -199,24 +206,20 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                             )}
                         <dl className="grid sm:grid-cols-5 gap-x-3">
                             <dt className="col-span-3 font-semibold text-gray-800">
-                                Total:
+                                {t('total')}
                             </dt>
                             <dd className="col-span-2 text-gray-500">
-                                {formatNumberWithCommas(
-                                    Number(details.totalAmount)
-                                )}{" "}
-                                {details.currency}
+                                {formatNumberWithCommas(Number(details.totalAmount))} {details.currency}
                             </dd>
                         </dl>
                         {details.totalAmountInWords && (
                             <dl className="grid sm:grid-cols-5 gap-x-3">
                                 <dt className="col-span-3 font-semibold text-gray-800">
-                                    Total in words:
+                                    {t('totalInWords')}
                                 </dt>
                                 <dd className="col-span-2 text-gray-500">
                                     <em>
-                                        {details.totalAmountInWords}{" "}
-                                        {details.currency}
+                                        {details.totalAmountInWords} {details.currency}
                                     </em>
                                 </dd>
                             </dl>
@@ -225,11 +228,11 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                 </div>
             </div>
 
-            <div>
+            <div dir={isRTL ? 'rtl' : 'ltr'}>
                 <div className="my-4">
                     <div className="my-2">
                         <p className="font-semibold text-blue-600">
-                            Additional notes:
+                            {t('additionalNotes')}
                         </p>
                         <p className="font-regular text-gray-800">
                             {details.additionalNotes}
@@ -237,7 +240,7 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                     </div>
                     <div className="my-2">
                         <p className="font-semibold text-blue-600">
-                            Payment terms:
+                            {t('paymentTerms')}
                         </p>
                         <p className="font-regular text-gray-800">
                             {details.paymentTerms}
@@ -245,24 +248,21 @@ const InvoiceTemplate2 = (data: InvoiceType) => {
                     </div>
                     <div className="my-2">
                         <span className="font-semibold text-md text-gray-800">
-                            Please send the payment to this address
+                            {t('paymentInstructions')}
                             <p className="text-sm">
-                                Bank: {details.paymentInformation?.bankName}
+                                {t('bank')} {details.paymentInformation?.bankName}
                             </p>
                             <p className="text-sm">
-                                Account name:{" "}
-                                {details.paymentInformation?.accountName}
+                                {t('accountName')} {details.paymentInformation?.accountName}
                             </p>
                             <p className="text-sm">
-                                Account no:{" "}
-                                {details.paymentInformation?.accountNumber}
+                                {t('accountNumber')} {details.paymentInformation?.accountNumber}
                             </p>
                         </span>
                     </div>
                 </div>
                 <p className="text-gray-500 text-sm">
-                    If you have any questions concerning this invoice, use the
-                    following contact information:
+                    {t('contactInfo')}
                 </p>
                 <div>
                     <p className="block text-sm font-medium text-gray-800">

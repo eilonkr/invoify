@@ -2,12 +2,18 @@
 
 // Next
 import dynamic from "next/dynamic";
+import { useParams } from "next/navigation";
 
 // RHF
 import { useFormContext } from "react-hook-form";
 
 // Types
 import { InvoiceType } from "@/types";
+import type { Language } from "@/app/translations/invoice";
+
+interface InvoiceTemplateProps extends InvoiceType {
+    language?: Language;
+}
 
 type ViewTemplatePageProps = {
     params: { id: string };
@@ -15,8 +21,10 @@ type ViewTemplatePageProps = {
 
 const ViewTemplate = ({ params }: ViewTemplatePageProps) => {
     const templateNumber = params.id;
+    const routeParams = useParams();
+    const currentLocale = routeParams.locale?.toString() || 'en';
 
-    const DynamicComponent = dynamic<InvoiceType>(
+    const DynamicComponent = dynamic<InvoiceTemplateProps>(
         () =>
             import(
                 `@/app/components/templates/invoice-pdf/InvoiceTemplate${templateNumber}`
@@ -32,6 +40,7 @@ const ViewTemplate = ({ params }: ViewTemplatePageProps) => {
                 sender={formValues.sender}
                 receiver={formValues.receiver}
                 details={formValues.details}
+                language={currentLocale as Language}
             />
         </div>
     );

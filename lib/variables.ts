@@ -54,7 +54,6 @@ export const NODEMAILER_PW = process.env.NODEMAILER_PW;
  */
 export const LOCALES = [
     { code: "en", name: "English" },
-    { code: "he", name: "עברית" },
     { code: "de", name: "Deutsch" },
     { code: "it", name: "Italiano" },
     { code: "es", name: "Español" },
@@ -65,6 +64,7 @@ export const LOCALES = [
     { code: "ja", name: "日本語" },
     { code: "nb-NO", name: "Norwegian (bokmål)" },
     { code: "nn-NO", name: "Norwegian (nynorsk)" },
+    { code: "he", name: "עברית" },
 ]
 export const DEFAULT_LOCALE = LOCALES[0].code;
 
